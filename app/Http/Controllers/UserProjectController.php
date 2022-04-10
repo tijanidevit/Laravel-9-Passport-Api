@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\UserProject;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class UserProjectController extends Controller
 {
@@ -27,46 +29,44 @@ class UserProjectController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|string|bail',
+            'image' => 'required|mimetypes:image/jpg,image/jpg,image/jpeg,image/png',
+            'description' => 'required|string|bail',
+            'type' => 'required|string|bail',
+        ]);
+
+        $user = auth()->user();
+        $data['views'] = 0;
+        $data['long_url'] = Str::slug($data['title']);
+        $data['short_url'] = $user->id. rand(00000,99999);
+
+        $project = $user->projects()->create($data);
+
+        if($project){
+            return response([
+                'status' => true,
+                'message' => 'Project added successfully',
+                'data' => $project,
+            ], 201);
+        }
+        else{
+            return response([
+                'status' => false,
+                'message' => 'Unable to add project',
+            ], 200);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\UserProject  $userProject
-     * @return \Illuminate\Http\Response
-     */
     public function show(UserProject $userProject)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\UserProject  $userProject
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UserProject $userProject)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UserProject  $userProject
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, UserProject $userProject)
     {
         //

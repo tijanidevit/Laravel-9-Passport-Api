@@ -27,3 +27,7 @@ Route::get('check/login', function(){
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::post('projects/new', [App\Http\Controllers\UserProjectController::class, 'store' ]);
+});
