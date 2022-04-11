@@ -23,12 +23,12 @@ Route::get('check/login', function(){
         'message' => 'User not logged in',
     ], 403);
 })->name('check_login');
+Route::middleware('auth:api')->post('/email/verify', [App\Http\Controllers\AuthController::class, 'verify_code']);
+Route::middleware('auth:api')->post('/email/code/request', [App\Http\Controllers\AuthController::class, 'request_new_code']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::middleware(['auth:api', App\Http\Middleware\UserEmailVerification::class,])->group(function () {
+
+Route::middleware(['auth:api', App\Http\Middleware\UserEmailVerification::class,])->prefix('artists/')->group(function () {
     Route::post('projects/', [App\Http\Controllers\UserProjectController::class, 'store' ]);
 });
 

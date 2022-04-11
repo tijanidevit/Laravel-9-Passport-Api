@@ -20,7 +20,7 @@ class UserEmailVerification
         if ($user->verification_code != '') {
             return response([
                 'status' => false,
-                'message' => 'Login Successful! Email account not yet verified'
+                'message' => 'Email account not yet verified'
             ], 200);
         }
         return $next($request);
