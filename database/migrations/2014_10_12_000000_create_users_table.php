@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('fullname');
             $table->string('stage_name');
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->default('');
             $table->integer('role')->default(1);
             $table->string('email')->unique();
+            $table->string('verification_code');
+            $table->string('image')->default( url('http://127.0.0.1:8000/storage/artists/images/') .'/avatar.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

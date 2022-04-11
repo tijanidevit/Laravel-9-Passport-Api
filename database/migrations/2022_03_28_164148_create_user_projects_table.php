@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('long_link');
             $table->string('short_link');
+            $table->integer('views')->default(0);
             $table->timestamps();
         });
     }

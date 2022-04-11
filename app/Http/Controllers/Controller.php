@@ -35,4 +35,14 @@ class Controller extends BaseController
         }
 
     }
+
+    protected function uploadImage($file, $request, $path)
+    {
+        if($request->hasFile($file)){
+            $image = $request->file($file);
+            $fileName   = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs($path,$fileName);
+            return $fileName;
+          }
+    }
 }

@@ -7,66 +7,45 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
+    public function show($userSlug)
     {
-        //
-    }
+        try {
+            $user = User::where('slug',$userSlug)->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
+            if (!$user) {
+                return response([
+                    'status' => false,
+                    'message' => 'User not found'
+                ], 200);
+            }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
+            $socials = $user->load('socials.social');
+            $projects = $user->load('projects')->orderBy('id', 'desc');
+            return response([
+                'status' => true,
+                'message' => 'User fetched successfully',
+                'data' => [
+                    'user' => $user,
+                ]
+            ], 200);
+        } catch (\Exception $ex) {
+            return response([
+                'status' => false,
+                'message' => $ex->getMessage()
+            ], 200);
+        }
+    }
+    
     public function update(Request $request, User $user)
     {
         //

@@ -20,7 +20,7 @@ class AuthController extends Controller
         ]);
         
         $data['password'] = Hash::make($data['password']);
-        $data['stage_name'] = $this->generateUserSlug($data['stage_name']);
+        $data['verification_code'] = rand(000000,111111);
 
         $user = User:: create($data);
 

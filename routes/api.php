@@ -29,5 +29,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::post('projects/new', [App\Http\Controllers\UserProjectController::class, 'store' ]);
+    Route::post('projects/', [App\Http\Controllers\UserProjectController::class, 'store' ]);
+
+    
+    
 });
+
+
+
+
+Route::get('{userSlug}', [App\Http\Controllers\UserController::class, 'show' ]);

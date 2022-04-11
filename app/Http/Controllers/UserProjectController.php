@@ -41,8 +41,9 @@ class UserProjectController extends Controller
 
         $user = auth()->user();
         $data['views'] = 0;
-        $data['long_url'] = Str::slug($data['title']);
-        $data['short_url'] = $user->id. rand(00000,99999);
+        $data['short_link'] = $user->id. rand(00000,99999);
+        $data['long_link'] = $data['title'];
+        $data['image'] = url('/storage/projects/images/').'/'. $this->uploadImage('image', $request,  'public/projects/images/');
 
         $project = $user->projects()->create($data);
 
