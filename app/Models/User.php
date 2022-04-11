@@ -25,6 +25,7 @@ class User extends Authenticatable
         'stage_name',
         'email',
         'password',
+        'verification_code'
     ];
 
     /**
@@ -35,6 +36,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'verification_code',
     ];
 
     /**

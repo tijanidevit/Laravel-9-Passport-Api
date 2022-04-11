@@ -12,13 +12,10 @@ class UserProject extends Model
 
     protected $guarded = [];
 
-    public function social()
+    public function user()
     {
-        return $this->belongsTo(Social::class);
+        return $this->belongsTo(User::class);
     }
-
-
-
 
     protected static function boot()
     {
