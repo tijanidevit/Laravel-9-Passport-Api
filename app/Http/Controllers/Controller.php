@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Str;
-
+use Storage;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -44,5 +44,31 @@ class Controller extends BaseController
             $image->storeAs($path,$fileName);
             return $fileName;
           }
+    }
+
+    protected function save_favicon_image($url, $path) {
+        $save_file_path = $path;    
+        $domain = parse_url($url)['host'];
+        $name = substr($url, strrpos($url, '/') + 1).'.png';
+
+        $filepath = $save_file_path . $name;
+    
+        if (!file_exists ($filepath)) {
+            $image = file_get_contents ('https://www.google.com/s2/favicons?domain=' . $domain);
+            Storage::put($filepath, $image);
+        }
+        return $name;
+    }
+
+    public function tc()
+    {
+        try {
+            
+        } catch (\Exception $ex) {
+            return response([
+                'status' => false,
+                'message' => $ex->message,
+            ], 200);
+        }
     }
 }

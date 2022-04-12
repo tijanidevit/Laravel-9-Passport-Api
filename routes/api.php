@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', [App\Http\Controllers\AuthController::class, 'register' ])->name('post_register');
-Route::post('login', [App\Http\Controllers\AuthController::class, 'login' ])->name('post_login');
+Route::post('register', [App\Http\Controllers\AuthController::class, 'register'])->name('post_register');
+Route::post('login', [App\Http\Controllers\AuthController::class, 'login'])->name('post_login');
 Route::get('check/login', function(){
     return response([
         'status' => 0,
@@ -29,10 +29,18 @@ Route::middleware('auth:api')->post('/email/code/request', [App\Http\Controllers
 
 
 Route::middleware(['auth:api', App\Http\Middleware\UserEmailVerification::class,])->prefix('artists/')->group(function () {
-    Route::post('projects/', [App\Http\Controllers\UserProjectController::class, 'store' ]);
+    Route::post('projects/', [App\Http\Controllers\UserProjectController::class, 'store']);
+    Route::get('projects/', [App\Http\Controllers\UserProjectController::class, 'index_for_artist']);
+    Route::get('projects/{userProject}', [App\Http\Controllers\UserProjectController::class, 'show_for_artist']);
+    Route::put('projects/{userProject}', [App\Http\Controllers\UserProjectController::class, 'update']);
+    Route::delete('projects/{userProject}', [App\Http\Controllers\UserProjectController::class, 'destroy']);
+
+    Route::post('projects/{userProject}/links', [App\Http\Controllers\ProjectLinkController::class, 'store']);
+    Route::put('projects/{userProject}/links/{projectLink}', [App\Http\Controllers\ProjectLinkController::class, 'update']);
+    Route::delete('projects/{userProject}/links/{projectLink}', [App\Http\Controllers\ProjectLinkController::class, 'destroy']);
 });
 
 
 
 
-Route::get('{userSlug}', [App\Http\Controllers\UserController::class, 'show' ]);
+Route::get('{userSlug}', [App\Http\Controllers\UserController::class, 'show']);
