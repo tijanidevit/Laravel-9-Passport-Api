@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('role')->default(1);
             $table->string('email')->unique();
             $table->string('verification_code');
-            $table->string('image')->default( url('http://127.0.0.1:8000/storage/artists/images/') .'/avatar.png');
+            $table->string('image')->default( url('https://simlink.herokuapp.com/storage/artists/images/') .'/avatar.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
