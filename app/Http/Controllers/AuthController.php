@@ -14,39 +14,30 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        try {
-            $data = $request->validate([
-                'fullname' => 'required|string|bail',
-                'stage_name' => 'required|string|bail',
-                'email' => 'required|string|email|unique:users|bail',
-                'password' => 'required|string|bail|min:8',
-            ]);
-            
-            $data['password'] = Hash::make($data['password']);
-            $data['email'] = $data['email'];
-            $data['verification_code'] = rand(111111,999999);
-            $subject = config('app.name') ." Verification Code";
-    
-            
-    
-            $user = User:: create($data);
-    
-            $token = $user->createToken("token")->accessToken;           
-            Mail::to($data['email'])->send(new UserRegistrationMail($data['stage_name'], $subject, $data['verification_code']));
-            return response([
-                'status' => true,
-                'message' => 'Registration completed',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token,
-                ]
-            ], 201);
-        } catch (\Exception $ex) {
-            return response([
-                'status' => false,
-                'message' => $ex->getMessage(),
-            ], 200);
-        }
+        $data = $request->validate([
+            'fullname' => 'required|string|bail',
+            'stage_name' => 'required|string|bail',
+            'email' => 'required|string|email|unique:users|bail',
+            'password' => 'required|string|bail|min:8',
+        ]);
+        
+        $data['password'] = Hash::make($data['password']);
+        $data['email'] = $data['email'];
+        $data['verification_code'] = rand(111111,999999);
+        $subject = config('app.name') ." Verification Code";
+
+        $user = User:: create($data);
+
+        $token = $user->createToken("token")->accessToken;           
+        Mail::to($data['email'])->send(new UserRegistrationMail($data['stage_name'], $subject, $data['verification_code']));
+        return response([
+            'status' => true,
+            'message' => 'Registration completed',
+            'data' => [
+                'user' => $user,
+                'token' => $token,
+            ]
+        ], 201);
     }
     
     public function login(Request $request)

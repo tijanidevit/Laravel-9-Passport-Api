@@ -29,8 +29,12 @@ class UserController extends Controller
                 ], 200);
             }
 
-            $socials = $user->load('socials.social');
+            $user->load('socials.social');
             $projects = $user->load('projects')->orderBy('id', 'desc');
+
+            $user->total_projects = $projects->count();
+            $user->total_views = $user->projects->sum('views');
+
             return response([
                 'status' => true,
                 'message' => 'User fetched successfully',
